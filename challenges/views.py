@@ -18,7 +18,17 @@ month_dict = {
     "december": "in December eat dates",
 }
 
+def index(request):
+    month_list= ""
+    months = list(month_dict.keys())
+    for month in months:
+        cap_month = month.capitalize()
+        month_path= reverse('monthly_challenge', args=[month])
+        month_list += f"<li><a href='{month_path}'>{cap_month}</a></li>"
 
+    response_data = f"<ul>{month_list}</ul>"
+    return HttpResponse(response_data)
+        
 def monthly_challenge_by_number(request, month):
     months = list(month_dict.keys())
     if month > len(months):
@@ -30,7 +40,8 @@ def monthly_challenge_by_number(request, month):
 def monthly_challenge(request, month):
     try:
         text = month_dict[month]
-        return HttpResponse(text)
+        response_data = f"<h1>{text}</h1>"
+        return HttpResponse(response_data)
     except:
         return HttpResponseNotFound("Invalid month")
 
